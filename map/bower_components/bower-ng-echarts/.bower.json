@@ -1,0 +1,15 @@
+{
+  "name": "bower-ng-echarts",
+  "homepage": "https://github.com/fxfuu/ng-echarts",
+  "version": "3.2.4",
+  "_release": "3.2.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "3.2.4",
+    "commit": "3e188e394c7366b7eedf704a07271c4970078086"
+  },
+  "_source": "https://github.com/fxfuu/ng-echarts.git",
+  "_target": "^3.2.4",
+  "_originalSource": "bower-ng-echarts",
+  "_direct": true
+}
