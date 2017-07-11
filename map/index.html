@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Bootflat-Admin Template</title>
+  <title>Landslides</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="shortcut icon" href="favicon_16.ico" />
   <link rel="bookmark" href="favicon_16.ico" />
@@ -58,24 +58,25 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-        <a href="#" class="navbar-brand">Landslide</a>
+        <a href="http://www3.cgistln.nu.ac.th/nanlandslide/" class="navbar-brand">NAN Landslide</a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div id="bs-content-row-navbar-collapse-5" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li class="active"><a href="getting-started.html">Getting Started</a></li>
-          <li class="active"><a href="index.html">Documentation</a></li>
+          <li class="active"><a href="http://www3.cgistln.nu.ac.th/nanlandslide/">Getting Started</a></li>
+          <li class="active"><a href="http://www3.cgistln.nu.ac.th/nanlandslide/index.html#about">Documentation</a></li>
           <!-- <li class="disabled"><a href="#">Link</a></li> -->
           <li class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">Silverbux <b class="caret"></b></a>
+            <a data-toggle="dropdown" class="dropdown-toggle" href="#">OGC Web Services <b class="caret"></b></a>
             <ul role="menu" class="dropdown-menu">
-              <li class="dropdown-header">web map service</li>
-              <li><a href="#">Action</a></li>
+              <li class="dropdown-header">OGC Web Services</li>
+                <li class="divider"></li>
+              <li class="disabled"><a href="http://www3.cgistln.nu.ac.th/geoserver/lsnanbasin/ows?service=wms&version=1.3.0&request=GetCapabilities">Web Map Service (WMS)</a></li>
               <li class="divider"></li>
-              <li class="active"><a href="#">เกี่ยวกับเรา</a></li>
+              <li class="disabled"><a href="http://www3.cgistln.nu.ac.th/geoserver/web/">GeoServer</a></li>
               <li class="divider"></li>
-              <li class="disabled"><a href="#">Signout</a></li>
+              <li class="active"><a href="#">Exit</a></li>
             </ul>
           </li>
         </ul>
@@ -123,9 +124,23 @@
                     </label>
             <p>
           </li>
-          <li class="list-group-item">กลุ่มเมฆฝน
+          <li class="list-group-item">ข้อมูลเรดาร์ฝนสถานีพิษณุโลก
             <label class="toggle pull-right">
-                        <input type="checkbox" ng-model="checkboxModel.radar_pl" ng-click="showLayers('radar_pl')">
+                        <input type="checkbox" ng-model="checkboxModel.radar_phs" ng-click="showLayers('radar_phs')">
+                        <span class="handle"></span>
+                    </label>
+            <p>
+          </li>
+          <li class="list-group-item">ข้อมูลเรดาร์ฝนสถานีเชียงราย
+            <label class="toggle pull-right">
+                        <input type="checkbox" ng-model="checkboxModel.radar_cri" ng-click="showLayers('radar_cri')">
+                        <span class="handle"></span>
+                    </label>
+            <p>
+          </li>
+          <li class="list-group-item">ข้อมูลเรดาร์ฝนสถานีขอนแก่น
+            <label class="toggle pull-right">
+                        <input type="checkbox" ng-model="checkboxModel.radar_kkn" ng-click="showLayers('radar_kkn')">
                         <span class="handle"></span>
                     </label>
             <p>
@@ -144,6 +159,18 @@
             &nbsp;&nbsp;&nbsp;<img src="http://map.nu.ac.th/gs-alr2/wms?Service=WMS&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=alr:ln9p_amp">ขอบเขตอำเภอ
             </br>
             &nbsp;&nbsp;&nbsp;<img src="http://map.nu.ac.th/gs-alr2/wms?Service=WMS&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=alr:ln9p_prov">ขอบเขตจังหวัด
+            </br>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">หน่วยงานที่เกี่ยวข้อง</h3>
+          </div>
+          <div class="panel-body">
+            &nbsp;&nbsp;&nbsp;<img src="http://www3.cgistln.nu.ac.th/nanlandslide/img/team/nu.jpg" height="40" width="42">
+            &nbsp;&nbsp;&nbsp;<img src="http://www3.cgistln.nu.ac.th/nanlandslide/img/team/gistda.jpg" height="40" width="42">
+            &nbsp;&nbsp;&nbsp;<img src="http://www3.cgistln.nu.ac.th/nanlandslide/img/team/gistnu.jpg" height="40" width="42">
             </br>
           </div>
         </div>
