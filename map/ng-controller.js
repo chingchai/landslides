@@ -60,12 +60,12 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             name: 'ขอบเขตจังหวัด',
             type: 'wms',
             visible: true,
-            url: 'http://ows.gistda.or.th/geoserver/ows?',
+            url: 'http://www3.cgistln.nu.ac.th/geoserver/ows?',
             layerParams: {
-                layers: 'fgds54_beta:L05_AdminBoundary_Province_2011_50k_FGDS_beta',
+                layers: 'gistdata:province',
                 format: 'image/png',
                 transparent: true,
-                CQL_FILTER: "PRV_CODE IN ('53', '55', '65', '66')",
+                CQL_FILTER: "pv_code IN ('53', '55', '60','65', '66')",
                 zIndex: 3
             },
             layerOptions: {
@@ -78,12 +78,12 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             name: 'ขอบเขตอำเภอ',
             type: 'wms',
             visible: true,
-            url: 'http://map.nu.ac.th/gs-alr2/ows?',
+            url: 'http://www3.cgistln.nu.ac.th/geoserver/ows?',
             layerParams: {
-                layers: 'alr:ln9p_amp',
+                layers: 'gistdata:amphoe',
                 format: 'image/png',
                 transparent: true,
-                CQL_FILTER: "prov_code IN ('53', '65')",
+                CQL_FILTER: "pv_code IN ('53', '55', '60','65', '66')",
                 zIndex: 4
             },
             layerOptions: {
@@ -97,12 +97,12 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             name: 'ขอบเขตตำบล',
             type: 'wms',
             visible: true,
-            url: 'http://map.nu.ac.th/gs-alr2/ows?',
+            url: 'http://www3.cgistln.nu.ac.th/geoserver/ows?',
             layerParams: {
-                layers: 'alr:ln9p_tam',
+                layers: 'gistdata:tambon',
                 format: 'image/png',
                 transparent: true,
-                CQL_FILTER: "prov_code IN ('53', '65')",
+                CQL_FILTER: "pv_code IN ('53', '55', '60','65', '66')",
                 zIndex: 5
             },
             layerOptions: {
@@ -116,12 +116,12 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             name: 'หมู่บ้าน',
             type: 'wms',
             visible: true,
-            url: 'http://map.nu.ac.th/gs-alr2/ows?',
+            url: 'http://www3.cgistln.nu.ac.th/geoserver/ows?',
             layerParams: {
-                layers: 'alr:ln9p_vill',
+                layers: 'gistdata:village',
                 format: 'image/png',
                 transparent: true,
-                CQL_FILTER: "prov_code IN ('53', '65')",
+                CQL_FILTER: "prov_code IN ('53', '55', '60','65', '66')",
                 zIndex: 6
             },
             layerOptions: {
@@ -133,8 +133,8 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
 
         angular.extend($scope, {
             center: {
-                lat: 17.100,
-                lng: 100.200,
+                lat: 17.451,
+                lng: 100.570,
                 zoom: 7
             },
             layercontrol: {
