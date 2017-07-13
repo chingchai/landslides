@@ -20,6 +20,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             },
             group: "Open Fire Map"
         };
+
         var radar_cri = {
             name: 'ข้อมูลเรดาร์ฝน: เชียงราย',
             type: 'wms',
@@ -38,6 +39,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             },
             group: "Open Fire Map"
         };
+
         var radar_kkn = {
             name: 'ข้อมูลเรดาร์ฝน: ขอนแก่น',
             type: 'wms',
@@ -56,6 +58,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             },
             group: "Open Fire Map"
         };
+
         var province = {
             name: 'ขอบเขตจังหวัด',
             type: 'wms',
@@ -74,6 +77,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             },
             group: "Open Fire Map"
         };
+
         var amphoe = {
             name: 'ขอบเขตอำเภอ',
             type: 'wms',
@@ -123,6 +127,25 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                 transparent: true,
                 CQL_FILTER: "prov_code IN ('53', '55', '60','65', '66')",
                 zIndex: 6
+            },
+            layerOptions: {
+                format: "image/png",
+                opacity: 1,
+            },
+            group: "Open Fire Map"
+        };
+
+        var rain_haii = {
+            name: 'ปริมาณฝน: สสนก.',
+            type: 'wms',
+            visible: true,
+            url: 'http://www3.cgistln.nu.ac.th/geoserver/ows?',
+            layerParams: {
+                layers: 'gistdata:geotiff_coverage',
+                format: 'image/png',
+                attribution: '&copy; <a href="http://www.gistnu.com">GISTNU</a>',
+                transparent: true,
+                zIndex: 1
             },
             layerOptions: {
                 format: "image/png",
@@ -242,6 +265,14 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                 this.layers.overlays.radar_kkn = radar_kkn
             },
 
+            // haii rainfall
+            removeRain_haiiLayer: function () {
+                delete this.layers.overlays.rain_haii;
+            },
+            addRain_haiiLayer: function () {
+                this.layers.overlays.rain_haii = rain_haii
+            },
+
         })
 
         console.log($scope.center);
@@ -253,7 +284,8 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             province: true,
             radar_phs: false,
             radar_cri: false,
-            radar_kkn: false
+            radar_kkn: false,
+            rain_haii: false
         };
 
         $scope.showLayers = function (val) {
@@ -300,6 +332,12 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                     $scope.addRadar_kknLayer();
                 } else {
                     $scope.removeRadar_kknLayer();
+                }
+            }else if (val == 'rain_haii') {
+                if ($scope.checkboxModel.rain_haii == true) {
+                    $scope.addRain_haiiLayer();
+                } else {
+                    $scope.removeRain_haiiLayer();
                 }
             }
         }
