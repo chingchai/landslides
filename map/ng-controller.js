@@ -134,7 +134,24 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             },
             group: "Open Fire Map"
         };
-
+        var lscls_mod1 = {
+            name: 'พืนที่เสี่ยงดินถล่ม(MOD1)',
+            type: 'wms',
+            visible: true,
+            url: 'http://www3.cgistln.nu.ac.th/geoserver/ows?',
+            layerParams: {
+                layers: 'lsnanbasin:mod1',
+                format: 'image/png',
+                attribution: '&copy; <a href="http://www.gistnu.com">GISTNU</a>',
+                transparent: true,
+                zIndex: 1
+            },
+            layerOptions: {
+                format: "image/png",
+                opacity: 1,
+            },
+            group: "Open Fire Map"
+        };
         var rain_haii = {
             name: 'ปริมาณฝน: สสนก.',
             type: 'wms',
@@ -201,7 +218,9 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                     }
                 },
                 overlays: {
-                    province: province
+                    province: province,
+                    lscls_mod1: lscls_mod1,
+                    rain_haii: rain_haii
                 }
             },
 
@@ -273,6 +292,14 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                 this.layers.overlays.rain_haii = rain_haii
             },
 
+            // landslide risk mod1
+            removeLandslide_mod1Layer: function () {
+                delete this.layers.overlays.lscls_mod1;
+            },
+            addLandslide_mod1Layer: function () {
+                this.layers.overlays.lscls_mod1 = lscls_mod1
+            },
+
         })
 
         console.log($scope.center);
@@ -285,7 +312,8 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             radar_phs: false,
             radar_cri: false,
             radar_kkn: false,
-            rain_haii: false
+            rain_haii: true,
+            lscls_mod1: true
         };
 
         $scope.showLayers = function (val) {
@@ -338,6 +366,12 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                     $scope.addRain_haiiLayer();
                 } else {
                     $scope.removeRain_haiiLayer();
+                }
+            }else if (val == 'lscls_mod1') {
+                if ($scope.checkboxModel.lscls_mod1 == true) {
+                    $scope.addLandslide_mod1Layer();
+                } else {
+                    $scope.removeLandslide_mod1Layer();
                 }
             }
         }
