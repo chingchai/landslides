@@ -147,3 +147,47 @@ r.mapcalc --overwrite expression=gd_slopefinal = if( gd_geomorph_cls@PERMANENT =
 # Export to Server
 r.out.gdal input=strm_slopefinal@PERMANENT output=D:\Landslide_Project\1-site_nanbasin\_grass\srtm_slopefinal.tif format=GTiff
 r.out.gdal input=gd_slopefinal@PERMANENT output=D:\Landslide_Project\1-site_nanbasin\_grass\gdem_slopefinal.tif format=GTiff
+#---------------------------END Section----------------------------------------------------
+# Define Sub-watershed(cachment) from DEM
+# SRTM DEM 30 meter
+# (Sun Jul 30 00:53:08 2017)
+r.import input=E:\Landslide_Project\1-site_nanbasin\srtm30m.tif output=srtm30m
+g.region -p raster=srtm30m@PERMANENT
+r.watershed -b --overwrite elevation=srtm30m@PERMANENT threshold=1000 accumulation=srtm.accm tci=srtm.tci spi=srtm.spi drainage=srtm.dir basin=srtm.basin stream=srtm.stream memory=8096
+r.terraflow --overwrite elevation=srtm30m@PERMANENT filled=srtm.trf.fill direction=srtm.trf.dir swatershed=srtm.trf.swsh accumulation=srtm.trf.accm tci=srtm.trf.tci memory=8096
+
+# ASTER GDEM resize 30 meter
+# (Sun Jul 30 02:41:47 2017)
+r.import input=C:\Workspace\gdem30m.tif output=gdem30m
+# Set region
+g.region -p raster=gdem30m@PERMANENT
+projection: 1 (UTM)
+zone:       47
+datum:      wgs84
+ellipsoid:  wgs84
+north:      2172135.97311788
+south:      1735824.559036
+west:       558421.92177331
+east:       748123.8675437
+nsres:      30.61190024
+ewres:      30.61190024
+rows:       14253
+cols:       6197
+cells:      88325841
+# Calculate Sub-watershed
+r.watershed -b --overwrite elevation=gdem30m@PERMANENT threshold=1000 accumulation=gdem.accm tci=gdem.tci spi=gdem.spi drainage=gdem.dir basin=gdem.basin stream=gdem.stream memory=8096
+r.terraflow --overwrite elevation=gdem30m@PERMANENT filled=gdem.trf.fill direction=gdem.trf.dir swatershed=gdem.trf.swsh accumulation=gdem.trf.accm tci=gdem.trf.tci memory=4096
+r.stream.basins --overwrite direction=gdem.dir@PERMANENT stream_rast=gdem.stream@PERMANENT memory=8096 basins=gdem.basin_last
+# Convert to vector type
+r.to.vect --overwrite input=gdem.basin@PERMANENT output=basin_gdem type=area
+r.to.vect -s --overwrite input=gdem.basin@PERMANENT output=basin_gdem_smooth type=area
+# Export to ESRI Shapefile
+v.out.ogr input=basin_gdem_smooth@PERMANENT type=area,auto output=C:\Workspace\Landslide format=ESRI_Shapefile
+# How to remove small polygon area using Eliminate tool by ArcGIS Desktop
+  - Select by attribute to find area less than 50,000 sqm
+  - Using Eliminate tool --> Navigate to ArcToolbox > Generalization > Eliminate
+  - Calculate Point centroid From Eliminate Result -->  Navigate to ArcToolbox  > Features > Feature to Point
+  - Spatial Joins between Point centroid and basin50k(DWR) for retived basin50k attributes
+  - Joins attribute between Result Spatial Joins points and Sub-watershed (From Eliminate Result)
+  - Import to PostgreSQL/PostGIS
+#---------------------------END Section----------------------------------------------------
