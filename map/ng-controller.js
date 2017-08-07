@@ -18,7 +18,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 format: "image/png",
                 opacity: 1,
             },
-            group: "Open Fire Map"
+            group: "Landslide Map"
         };
 
         var radar_cri = {
@@ -37,7 +37,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 format: "image/png",
                 opacity: 1,
             },
-            group: "Open Fire Map"
+            group: "Landslide Map"
         };
 
         var radar_kkn = {
@@ -56,9 +56,26 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 format: "image/png",
                 opacity: 1,
             },
-            group: "Open Fire Map"
+            group: "Landslide Map"
         };
-
+        var basin = {
+            name: 'ขอบเขตลุ่มน้ำ',
+            type: 'wms',
+            visible: true,
+            url: 'http://www3.cgistln.nu.ac.th/geoserver/ows?',
+            layerParams: {
+                layers: 'gistdata:basin_50k',
+                format: 'image/png',
+                transparent: true,
+                CQL_FILTER: "mb_code IN ('09')",
+                zIndex: 3
+            },
+            layerOptions: {
+                format: "image/png",
+                opacity: 1,
+            },
+            group: "Landslide Map"
+        };
         var province = {
             name: 'ขอบเขตจังหวัด',
             type: 'wms',
@@ -75,7 +92,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 format: "image/png",
                 opacity: 1,
             },
-            group: "Open Fire Map"
+            group: "Landslide Map"
         };
 
         var amphoe = {
@@ -94,7 +111,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 format: "image/png",
                 opacity: 1,
             },
-            group: "Open Fire Map"
+            group: "Landslide Map"
         };
 
         var tambon = {
@@ -113,7 +130,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 format: "image/png",
                 opacity: 1,
             },
-            group: "Open Fire Map"
+            group: "Landslide Map"
         };
 
         var village = {
@@ -132,7 +149,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 format: "image/png",
                 opacity: 1,
             },
-            group: "Open Fire Map"
+            group: "Landslide Map"
         };
         var lscls_mod1 = {
             name: 'พืนที่เสี่ยงดินถล่ม(MOD1)',
@@ -144,13 +161,33 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 format: 'image/png',
                 attribution: '&copy; <a href="http://www.gistnu.com">GISTNU</a>',
                 transparent: true,
+                opacity: 0.7,
                 zIndex: 1
             },
             layerOptions: {
                 format: "image/png",
                 opacity: 1,
             },
-            group: "Open Fire Map"
+            group: "Landslide Map"
+        };
+        var lscls_mod2 = {
+            name: 'พืนที่เสี่ยงดินถล่ม(MOD2)',
+            type: 'wms',
+            visible: true,
+            url: 'http://www3.cgistln.nu.ac.th/geoserver/ows?',
+            layerParams: {
+                layers: 'lsnanbasin:mod2',
+                format: 'image/png',
+                attribution: '&copy; <a href="http://www.gistnu.com">GISTNU</a>',
+                transparent: true,
+                opacity: 0.7,
+                zIndex: 1
+            },
+            layerOptions: {
+                format: "image/png",
+                opacity: 1,
+            },
+            group: "Landslide Map"
         };
         var rain_haii = {
             name: 'ปริมาณฝน: สสนก.',
@@ -168,9 +205,26 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 format: "image/png",
                 opacity: 1,
             },
-            group: "Open Fire Map"
+            group: "Landslide Map"
         };
-
+        var dem = {
+            name: 'ข้อมูลระดับความสูงเชิงเลข',
+            type: 'wms',
+            visible: true,
+            url: 'http://www3.cgistln.nu.ac.th/geoserver/ows?',
+            layerParams: {
+                layers: 'lsnanbasin:gdem',
+                format: 'image/png',
+                attribution: '&copy; <a href="http://www.gistnu.com">GISTNU</a>',
+                transparent: true,
+                zIndex: 1
+            },
+            layerOptions: {
+                format: "image/png",
+                opacity: 1,
+            },
+            group: "Landslide Map"
+        };
         angular.extend($scope, {
             center: {
                 lat: 17.451,
@@ -186,26 +240,34 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
 
             layers: {
                 baselayers: {
-                    cdb: {
-                        name: 'CartoDBMap',
+                  gphy: {
+                      name: 'Google Terrain',
+                      type: 'xyz',
+                      url: 'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
+                      layerOptions: {
+                          subdomains:['mt0','mt1','mt2','mt3'],
+                          continuousWorld: true
+                      }
+                  },
+                    ghyb: {
+                        name: 'Google Hybrid',
                         type: 'xyz',
-                        url: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+                        url: 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',
                         layerOptions: {
-                            subdomains: ['a', 'b', 'c'],
-                            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+                            subdomains:['mt0','mt1','mt2','mt3'],
                             continuousWorld: true
                         }
                     },
-                    cycle: {
-                        name: 'OpenCycleMap',
-                        type: 'xyz',
-                        url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
-                        layerOptions: {
-                            subdomains: ['a', 'b', 'c'],
-                            attribution: '&copy; <a href="http://www.opencyclemap.org/copyright">OCM</a> &copy; <a href="http://www.openstreetmap.org/copyright">OSM</a>',
-                            continuousWorld: true
-                        }
-                    },
+                  cdb: {
+                      name: 'CartoDBMap',
+                      type: 'xyz',
+                      url: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+                      layerOptions: {
+                          subdomains: ['a', 'b', 'c'],
+                          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+                          continuousWorld: true
+                      }
+                  },
                     osm: {
                         name: 'OpenStreetMap',
                         type: 'xyz',
@@ -218,8 +280,9 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                     }
                 },
                 overlays: {
-                    province: province,
+                    basin: basin,
                     lscls_mod1: lscls_mod1,
+                    lscls_mod1: lscls_mod2,
                     rain_haii: rain_haii
                 }
             },
@@ -260,6 +323,14 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 this.layers.overlays.province = province
             },
 
+            //basin
+            removeBasinLayer: function () {
+                delete this.layers.overlays.basin;
+            },
+            addBasinLayer: function () {
+                this.layers.overlays.basin = basin
+            },
+
             //phs radar
             removeRadar_phsLayer: function () {
                 delete this.layers.overlays.radar_phs;
@@ -292,6 +363,14 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 this.layers.overlays.rain_haii = rain_haii
             },
 
+            // dem
+            removeDEMLayer: function () {
+                delete this.layers.overlays.dem;
+            },
+            addDEMLayer: function () {
+                this.layers.overlays.dem = dem
+            },
+
             // landslide risk mod1
             removeLandslide_mod1Layer: function () {
                 delete this.layers.overlays.lscls_mod1;
@@ -300,24 +379,35 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 this.layers.overlays.lscls_mod1 = lscls_mod1
             },
 
+            // landslide risk mod2
+            removeLandslide_mod2Layer: function () {
+                delete this.layers.overlays.lscls_mod2;
+            },
+            addLandslide_mod2Layer: function () {
+                this.layers.overlays.lscls_mod2 = lscls_mod2
+            },
+
         })
 
-        //console.log($scope.center);
+        console.log($scope.center);
 
         $scope.checkboxModel = {
             vill: false,
             tambon: false,
             amphoe: false,
-            province: true,
+            province: false,
+            basin: true,
             radar_phs: false,
             radar_cri: false,
             radar_kkn: false,
             rain_haii: true,
-            lscls_mod1: true
+            lscls_mod1: true,
+            lscls_mod2: true,
+            dem: true
         };
 
         $scope.showLayers = function (val) {
-            //console.log(val);
+            console.log(val);
 
             if (val == 'village') {
                 if ($scope.checkboxModel.vill == true) {
@@ -331,37 +421,43 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 } else {
                     $scope.removeTambonLayer();
                 }
-            } else if (val == 'amphoe') {
+            }else if (val == 'amphoe') {
                 if ($scope.checkboxModel.amphoe == true) {
                     $scope.addAmphoeLayer();
                 } else {
                     $scope.removeAmphoeLayer();
                 }
-            } else if (val == 'province') {
+            }else if (val == 'province') {
                 if ($scope.checkboxModel.province == true) {
                     $scope.addProvinceLayer();
                 } else {
                     $scope.removeProvinceLayer();
                 }
-            } else if (val == 'radar_phs') {
+            }else if (val == 'basin') {
+                if ($scope.checkboxModel.basin == true) {
+                    $scope.addBasinLayer();
+                } else {
+                    $scope.removeBasinLayer();
+                }
+            }else if (val == 'radar_phs') {
                 if ($scope.checkboxModel.radar_phs == true) {
                     $scope.addRadar_phsLayer();
                 } else {
                     $scope.removeRadar_phsLayer();
                 }
-            } else if (val == 'radar_cri') {
+            }else if (val == 'radar_cri') {
                 if ($scope.checkboxModel.radar_cri == true) {
                     $scope.addRadar_criLayer();
                 } else {
                     $scope.removeRadar_criLayer();
                 }
-            } else if (val == 'radar_kkn') {
+            }else if (val == 'radar_kkn') {
                 if ($scope.checkboxModel.radar_kkn == true) {
                     $scope.addRadar_kknLayer();
                 } else {
                     $scope.removeRadar_kknLayer();
                 }
-            } else if (val == 'rain_haii') {
+            }else if (val == 'rain_haii') {
                 if ($scope.checkboxModel.rain_haii == true) {
                     $scope.addRain_haiiLayer();
                 } else {
@@ -372,6 +468,18 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                     $scope.addLandslide_mod1Layer();
                 } else {
                     $scope.removeLandslide_mod1Layer();
+                }
+            }else if (val == 'lscls_mod2') {
+                if ($scope.checkboxModel.lscls_mod2 == true) {
+                    $scope.addLandslide_mod2Layer();
+                } else {
+                    $scope.removeLandslide_mod2Layer();
+                }
+            }else if (val == 'dem') {
+                if ($scope.checkboxModel.dem == true) {
+                    $scope.addDEMLayer();
+                } else {
+                    $scope.removeDEMLayer();
                 }
             }
         }
@@ -395,74 +503,72 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
             begin = ($scope.currentPage - 1) * $scope.numPerPage;
             end = begin + $scope.numPerPage;
             index = $scope.vills.indexOf(value);
-            //console.log($scope.vills.indexOf(value));
             return (begin <= index && index < end);
         }
 
-
         $scope.barOption = {
-            title: {
+            title : {
                 text: '',
                 subtext: 'mm.'
             },
-            tooltip: {
+            tooltip : {
                 trigger: 'axis'
             },
             legend: {
-                data: ['Evap', 'Rain']
+                data:['Evap','Rain']
             },
             toolbox: {
-                show: true,
-                feature: {
-                    mark: { show: true },
-                    dataView: { show: true, readOnly: false },
-                    magicType: { show: true, type: ['line', 'bar'] },
-                    restore: { show: true },
-                    saveAsImage: { show: true }
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
                 }
             },
-            calculable: true,
-            xAxis: [
+            calculable : true,
+            xAxis : [
                 {
-                    type: 'category',
-                    data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                    type : 'category',
+                    data : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
                 }
             ],
-            yAxis: [
+            yAxis : [
                 {
-                    type: 'value'
+                    type : 'value'
                 }
             ],
-            series: [
+            series : [
                 {
-                    name: 'Evap',
-                    type: 'bar',
-                    data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
-                    markPoint: {
-                        data: [
-                            { type: 'max', name: 'Max' },
-                            { type: 'min', name: 'Min' }
+                    name:'Evap',
+                    type:'bar',
+                    data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: 'Max'},
+                            {type : 'min', name: 'Min'}
                         ]
                     },
-                    markLine: {
-                        data: [
-                            { type: 'average', name: 'Avg' }
+                    markLine : {
+                        data : [
+                            {type : 'average', name: 'Avg'}
                         ]
                     }
                 },
                 {
-                    name: 'Rain',
-                    type: 'bar',
-                    data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
-                    markPoint: {
-                        data: [
-                            { name: 'Max', value: 182.2, xAxis: 7, yAxis: 183, symbolSize: 18 },
-                            { name: 'Min', value: 2.3, xAxis: 11, yAxis: 3 }
+                    name:'Rain',
+                    type:'bar',
+                    data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+                    markPoint : {
+                        data : [
+                            {name : 'Max', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
+                            {name : 'Min', value : 2.3, xAxis: 11, yAxis: 3}
                         ]
                     },
-                    markLine: {
-                        data: [
-                            { type: 'average', name: 'Avg' }
+                    markLine : {
+                        data : [
+                            {type : 'average', name : 'Avg'}
                         ]
                     }
                 }
