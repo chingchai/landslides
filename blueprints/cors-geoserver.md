@@ -1,4 +1,5 @@
 # Enabling CORS in GeoServer (jetty)
+https://gis.stackexchange.com/questions/210109/enabling-cors-in-geoserver-jetty
 Just to clarify there are 2 steps required to make CORS access work with GeoServer and Jetty:
 1. Add the Jetty-Utility Servlets Jar to match the version of Jetty - for current versions of GeoServer (2.11.x) it is 9.2.13.v20150730, copy this to webapps/geoserver/WEB-INF/lib inside the geoserver-2.11.1 directory (or wherever you unpacked the zip file).
 Link Download
