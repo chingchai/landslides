@@ -224,6 +224,7 @@
                           <th>ชื่อตำบล</th>
                           <th>ชื่ออำเภอ</th>
                           <th>ชื่อจังหวัด</th>
+                          <th>Zoom</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -232,8 +233,9 @@
                           <td>{{ v.properties.vill_nam_t }}</td>
                           <td>{{ v.properties.tam_nam_t }}</td>
                           <td>{{ v.properties.amp_nam_t }}</td>
+                          <td>{{ v.properties.prov_nam_t }}</td>
                           <td class="text-center" colspan="2">
-                            <a class='glyphicon glyphicon-zoom-in' data-toggle='tooltip' title='Zoom' ng-click="goMap(r.properties.lat, r.properties.lon);">
+                            <a class='glyphicon glyphicon-zoom-in' data-toggle='tooltip' title='Zoom' ng-click="goMap(v.properties.c_y, v.properties.c_x);">
                                                     <i class='icon-zoom-in'></i>
                                                 </a>
                           </td>

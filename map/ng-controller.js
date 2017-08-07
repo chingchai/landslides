@@ -2,6 +2,19 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
 
     .controller('mapCtrl', function ($scope, geoService) {
 
+        var center = {
+            lat: 17.451,
+            lng: 100.570,
+            zoom: 7
+        };
+        $scope.goMap = function(lat,lon){
+          $scope.center = {
+              lat: Number(lat),
+              lng: Number(lon),
+              zoom: 15
+          }
+
+        };
         var radar_phs = {
             name: 'ข้อมูลเรดาร์ฝน: พิษณุโลก',
             type: 'wms',
@@ -226,11 +239,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
             group: "Landslide Map"
         };
         angular.extend($scope, {
-            center: {
-                lat: 17.451,
-                lng: 100.570,
-                zoom: 7
-            },
+            center: center,
             layercontrol: {
                 icons: {
                     uncheck: "fa fa-toggle-off",
