@@ -19,3 +19,17 @@
 .content-row .row{
     margin-bottom: 5px;
 }
+
+}
+.navbar-custom {
+    border: none;
+    border-radius: 0;
+    /*background-color: #AAB2BD;*/
+    width: 100%;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+.navbar-custom .navbar-brand{
+    width: 350px;
+    overflow: hidden;
+}

@@ -1,6 +1,6 @@
-angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
+angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSanitize', 'ui.bootstrap'])
 
-    .controller('mapCtrl', function ($scope) {
+    .controller('mapCtrl', function ($scope, geoService) {
 
         var radar_phs = {
             name: 'ข้อมูลเรดาร์ฝน: พิษณุโลก',
@@ -169,17 +169,17 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
 
             layers: {
                 baselayers: {
-                  cdb: {
-                      name: 'CartoDBMap',
-                      type: 'xyz',
-                      url: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-                      layerOptions: {
-                          subdomains: ['a', 'b', 'c'],
-                          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-                          continuousWorld: true
-                      }
-                  },
-                  cycle: {
+                    cdb: {
+                        name: 'CartoDBMap',
+                        type: 'xyz',
+                        url: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+                        layerOptions: {
+                            subdomains: ['a', 'b', 'c'],
+                            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+                            continuousWorld: true
+                        }
+                    },
+                    cycle: {
                         name: 'OpenCycleMap',
                         type: 'xyz',
                         url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
@@ -275,7 +275,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
 
         })
 
-        console.log($scope.center);
+        //console.log($scope.center);
 
         $scope.checkboxModel = {
             vill: false,
@@ -289,7 +289,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
         };
 
         $scope.showLayers = function (val) {
-            console.log(val);
+            //console.log(val);
 
             if (val == 'village') {
                 if ($scope.checkboxModel.vill == true) {
@@ -303,37 +303,37 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                 } else {
                     $scope.removeTambonLayer();
                 }
-            }else if (val == 'amphoe') {
+            } else if (val == 'amphoe') {
                 if ($scope.checkboxModel.amphoe == true) {
                     $scope.addAmphoeLayer();
                 } else {
                     $scope.removeAmphoeLayer();
                 }
-            }else if (val == 'province') {
+            } else if (val == 'province') {
                 if ($scope.checkboxModel.province == true) {
                     $scope.addProvinceLayer();
                 } else {
                     $scope.removeProvinceLayer();
                 }
-            }else if (val == 'radar_phs') {
+            } else if (val == 'radar_phs') {
                 if ($scope.checkboxModel.radar_phs == true) {
                     $scope.addRadar_phsLayer();
                 } else {
                     $scope.removeRadar_phsLayer();
                 }
-            }else if (val == 'radar_cri') {
+            } else if (val == 'radar_cri') {
                 if ($scope.checkboxModel.radar_cri == true) {
                     $scope.addRadar_criLayer();
                 } else {
                     $scope.removeRadar_criLayer();
                 }
-            }else if (val == 'radar_kkn') {
+            } else if (val == 'radar_kkn') {
                 if ($scope.checkboxModel.radar_kkn == true) {
                     $scope.addRadar_kknLayer();
                 } else {
                     $scope.removeRadar_kknLayer();
                 }
-            }else if (val == 'rain_haii') {
+            } else if (val == 'rain_haii') {
                 if ($scope.checkboxModel.rain_haii == true) {
                     $scope.addRain_haiiLayer();
                 } else {
@@ -342,69 +342,93 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             }
         }
 
+        //call json
+        $scope.getWfs = function () {
+            geoService.getWfs()
+                .then(function (response) {
+                    $scope.vills = response.data.features;
+                    $scope.Wfslength = 50;
+                    $scope.totalItems = $scope.Wfslength;
+                    $scope.currentPage = 1;
+                    $scope.numPerPage = 10;
+                })
+        };
+        $scope.getWfs();
+
+
+        $scope.paginate = function (value) {
+            var begin, end, index;
+            begin = ($scope.currentPage - 1) * $scope.numPerPage;
+            end = begin + $scope.numPerPage;
+            index = $scope.vills.indexOf(value);
+            //console.log($scope.vills.indexOf(value));
+            return (begin <= index && index < end);
+        }
+
+
         $scope.barOption = {
-            title : {
+            title: {
                 text: '',
                 subtext: 'mm.'
             },
-            tooltip : {
+            tooltip: {
                 trigger: 'axis'
             },
             legend: {
-                data:['Evap','Rain']
+                data: ['Evap', 'Rain']
             },
             toolbox: {
-                show : true,
-                feature : {
-                    mark : {show: true},
-                    dataView : {show: true, readOnly: false},
-                    magicType : {show: true, type: ['line', 'bar']},
-                    restore : {show: true},
-                    saveAsImage : {show: true}
+                show: true,
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    magicType: { show: true, type: ['line', 'bar'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
                 }
             },
-            calculable : true,
-            xAxis : [
+            calculable: true,
+            xAxis: [
                 {
-                    type : 'category',
-                    data : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+                    type: 'category',
+                    data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
                 }
             ],
-            yAxis : [
+            yAxis: [
                 {
-                    type : 'value'
+                    type: 'value'
                 }
             ],
-            series : [
+            series: [
                 {
-                    name:'Evap',
-                    type:'bar',
-                    data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
-                    markPoint : {
-                        data : [
-                            {type : 'max', name: 'Max'},
-                            {type : 'min', name: 'Min'}
+                    name: 'Evap',
+                    type: 'bar',
+                    data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+                    markPoint: {
+                        data: [
+                            { type: 'max', name: 'Max' },
+                            { type: 'min', name: 'Min' }
                         ]
                     },
-                    markLine : {
-                        data : [
-                            {type : 'average', name: 'Avg'}
+                    markLine: {
+                        data: [
+                            { type: 'average', name: 'Avg' }
                         ]
                     }
                 },
                 {
-                    name:'Rain',
-                    type:'bar',
-                    data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
-                    markPoint : {
-                        data : [
-                            {name : 'Max', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
-                            {name : 'Min', value : 2.3, xAxis: 11, yAxis: 3}
+                    name: 'Rain',
+                    type: 'bar',
+                    data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+                    markPoint: {
+                        data: [
+                            { name: 'Max', value: 182.2, xAxis: 7, yAxis: 183, symbolSize: 18 },
+                            { name: 'Min', value: 2.3, xAxis: 11, yAxis: 3 }
                         ]
                     },
-                    markLine : {
-                        data : [
-                            {type : 'average', name : 'Avg'}
+                    markLine: {
+                        data: [
+                            { type: 'average', name: 'Avg' }
                         ]
                     }
                 }

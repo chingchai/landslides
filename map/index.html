@@ -28,6 +28,8 @@
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-animate.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-sanitize.js"></script>
 
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+
   <!-- angular-openlayers -->
   <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"></script>
 
@@ -71,7 +73,7 @@
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">OGC Web Services <b class="caret"></b></a>
             <ul role="menu" class="dropdown-menu">
               <li class="dropdown-header">OGC Web Services</li>
-                <li class="divider"></li>
+              <li class="divider"></li>
               <li class="disabled"><a href="http://www3.cgistln.nu.ac.th/geoserver/lsnanbasin/ows?service=wms&version=1.3.0&request=GetCapabilities">Web Map Service (WMS)</a></li>
               <li class="divider"></li>
               <li class="disabled"><a href="http://www3.cgistln.nu.ac.th/geoserver/web/">GeoServer</a></li>
@@ -175,9 +177,9 @@
             <h3 class="panel-title">หน่วยงานที่เกี่ยวข้อง</h3>
           </div>
           <div class="panel-body">
-            &nbsp;&nbsp;&nbsp;<img src="http://www3.cgistln.nu.ac.th/nanlandslide/img/team/nu.jpg" height="40" width="42">
-            &nbsp;&nbsp;&nbsp;<img src="http://www3.cgistln.nu.ac.th/nanlandslide/img/team/gistda.jpg" height="40" width="42">
-            &nbsp;&nbsp;&nbsp;<img src="http://www3.cgistln.nu.ac.th/nanlandslide/img/team/gistnu.jpg" height="40" width="42">
+            &nbsp;&nbsp;&nbsp;<img src="http://www3.cgistln.nu.ac.th/nanlandslide/img/team/nu.jpg" height="40" width="42">            &nbsp;&nbsp;&nbsp;
+            <img src="http://www3.cgistln.nu.ac.th/nanlandslide/img/team/gistda.jpg" height="40" width="42"> &nbsp;&nbsp;&nbsp;
+            <img src="http://www3.cgistln.nu.ac.th/nanlandslide/img/team/gistnu.jpg" height="40" width="42">
             </br>
           </div>
         </div>
@@ -204,38 +206,34 @@
                     <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>#</th>
-                          <th>{{ 2 + 3}}</th>
-                          <th>Last Name</th>
-                          <th>Username</th>
+                          <th>ชื่อหมู่บ้าน</th>
+                          <th>ชื่อตำบล</th>
+                          <th>ชื่ออำเภอ</th>
+                          <th>ชื่อจังหวัด</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td>Larry</td>
-                          <td>the Bird</td>
-                          <td>@twitter</td>
+                        <tr ng-repeat="v in  vills | filter: paginate">
+                          <!--<td>{{ r.sta_id }}</td>-->
+                          <td>{{ v.properties.vill_nam_t }}</td>
+                          <td>{{ v.properties.tam_nam_t }}</td>
+                          <td>{{ v.properties.amp_nam_t }}</td>
+                          <td class="text-center" colspan="2">
+                            <a class='glyphicon glyphicon-zoom-in' data-toggle='tooltip' title='Zoom' ng-click="goMap(r.properties.lat, r.properties.lon);">
+                                                    <i class='icon-zoom-in'></i>
+                                                </a>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
+                    <ul uib-pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" 
+                      class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" 
+                      first-text="&laquo;" last-text="&raquo;"></ul>
                   </div>
 
                   <p>
-                    <h4>กราฟ</h4>
-                    <ng-echarts ec-ex class="col-md-12 echarts" ec-config="config" ec-option="barOption"></ng-echarts>
+                    <!-- <h4>กราฟ</h4>
+                    <ng-echarts ec-ex class="col-md-12 echarts" ec-config="config" ec-option="barOption"></ng-echarts> -->
 
                 </div>
               </div>
