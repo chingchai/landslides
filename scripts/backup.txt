@@ -1,0 +1,83 @@
+
+          __________  ___   __________    _______________
+         / ____/ __ \/   | / ___/ ___/   / ____/  _/ ___/
+        / / __/ /_/ / /| | \__ \\_  \   / / __ / / \__ \
+       / /_/ / _, _/ ___ |___/ /__/ /  / /_/ // / ___/ /
+       \____/_/ |_/_/  |_/____/____/   \____/___//____/
+
+Welcome to GRASS GIS 7.2.1
+GRASS GIS homepage: http://grass.osgeo.org
+
+Z = ( x - mean ) / standard deviation
+
+rain
+mean = 1463.298916946324
+std = 504.3974882779886
+("rain_spline2" - 1463.298916946324) / 504.3974882779886
+
+elevation
+mean = 282.7523006876582
+std = 291.1105330225796
+("elev" - 282.7523006876582) / 291.1105330225796
+
+
+slope
+mean = 15.30551389709412
+std = 15.97089648130912
+("slope" - 15.30551389709412) / 15.97089648130912
+
+
+fault
+mean = 49164.80831310928
+std = 77164.83337285608
+("fault_dist2" - 49164.80831310928) / 77164.83337285608
+
+1 / (1 + Exp(( - ( - 39.9168 + (0.0295 * "z_rain") + (0.0087 * "z_slope") + (0.0075 * "z_elev") + (0.0006 * "z_fault") + ( - 0.6413 * "s_grs") + (0.0979 * "s_def") + (-0.7801 * "s_mdf") + (-0.7785 * "s_ddf") + (-0.6169 * "s_agi") + (-2.3088* "s_clay")))))
+
+1 / (1 + Exp(( - ( - 39.9168 + (0.0295 * "rain") + (0.0087 * "slope") + (0.0075 * "elev") + (0.0006 * "fault") + ( - 0.6413 * "s_grs") + (0.0979 * "s_def") + (-0.7801 * "s_mdf") + (-0.7785 * "s_ddf") + (-0.6169 * "s_agi") + (-2.3088* "s_clay")))))
+
+
+1 / (1 + Exp(( - ( - 39.9168 + (0.029 * "z_rain") + (0.009 * "z_slope") + (0.007 * "z_elev") + (0.0005 * "z_fault_rv") + ( - 0.6413 * "s_grs") + (0.09791 * "s_def") + (-0.7801 * "s_mdf") + (-0.7784 * "s_ddf") + (-0.61690 * "s_agi") + (-2.3088 * "s_clay")))))
+
+reclass
+1 9 10	= 1
+5 6 7 8 = 2
+2 3 4	= 3
+r.reclass --overwrite input=srtm_geomorph@PERMANENT output=test2 rules=C:\Users\gistnublack\Documents\grassdata\nanwps_lanslide\PERMANENT\.tmp/unknown\4064.0
+
+
+if( test2@PERMANENT ==2 & srtm30m@PERMANENT > 60, 1, null() )
+if( test2@PERMANENT ==2 & srtm30m@PERMANENT > 75, 1, null() ) 
+
+r.reclass --overwrite input=srtm_geomorph@PERMANENT output=srtm_geomorph_cls rules=C:\Users\gistnublack\Documents\grassdata\nanwps_lanslide\PERMANENT\.tmp/unknown\4064.0
+reclass
+1 9 10	= 1
+5 6 7 8 = 2
+2 3 4	= 3
+
+if( srtm_geomorph_cls@PERMANENT ==2 & srtm30m@PERMANENT > 75, 1, null() ) 
+r.mapcalc --overwrite expression=strm_slopefinal = if( srtm_geomorph_cls@PERMANENT ==2 & srtm30m@PERMANENT > 75, 1, null() )
+
+
+
+r.reclass --overwrite input=geomorph@PERMANENT output=gd_geomorph_cls rules=C:\Users\gistnublack\Documents\grassdata\nanwps_lanslide\PERMANENT\.tmp/unknown\4064.0
+reclass
+1 9 10	= 1
+5 6 7 8 = 2
+2 3 4	= 3
+
+if( gd_geomorph_cls@PERMANENT ==2 & gdem@PERMANENT > 75, 1, null() ) 
+r.mapcalc --overwrite expression=gd_slopefinal = if( gd_geomorph_cls@PERMANENT ==2 & gdem@PERMANENT > 75, 1, null() )
+
+r.out.gdal input=strm_slopefinal@PERMANENT output=D:\Landslide_Project\1-site_nanbasin\_grass\srtm_slopefinal.tif format=GTiff
+r.out.gdal input=gd_slopefinal@PERMANENT output=D:\Landslide_Project\1-site_nanbasin\_grass\gdem_slopefinal.tif format=GTiff
+
+-------------
+1 9 10	= 1
+4 5 6 7 8 	= 2
+2 3 	= 3
+
+--
+1 10	= 1
+6 7 8 9 	= 2
+2 3 4 5 	= 3
