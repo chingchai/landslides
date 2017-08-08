@@ -146,16 +146,34 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
             group: "Landslide Map"
         };
 
+        // var village = {
+        //     name: 'หมู่บ้าน',
+        //     type: 'wms',
+        //     visible: true,
+        //     url: 'http://www3.cgistln.nu.ac.th/geoserver/ows?',
+        //     layerParams: {
+        //         layers: 'gistdata:village',
+        //         format: 'image/png',
+        //         transparent: true,
+        //         CQL_FILTER: "prov_code IN ('53', '55', '60','65', '66')",
+        //         zIndex: 6
+        //     },
+        //     layerOptions: {
+        //         format: "image/png",
+        //         opacity: 1,
+        //     },
+        //     group: "Landslide Map"
+        // };
         var village = {
             name: 'หมู่บ้าน',
             type: 'wms',
             visible: true,
             url: 'http://www3.cgistln.nu.ac.th/geoserver/ows?',
             layerParams: {
-                layers: 'gistdata:village',
+                layers: 'lsnanbasin:village_detect_final',
                 format: 'image/png',
                 transparent: true,
-                CQL_FILTER: "prov_code IN ('53', '55', '60','65', '66')",
+                //CQL_FILTER: "prov_code IN ('53', '55', '60','65', '66')",
                 zIndex: 6
             },
             layerOptions: {
@@ -174,12 +192,12 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 format: 'image/png',
                 attribution: '&copy; <a href="http://www.gistnu.com">GISTNU</a>',
                 transparent: true,
-                opacity: 0.7,
+                //opacity: 0.5,
                 zIndex: 1
             },
             layerOptions: {
                 format: "image/png",
-                opacity: 1,
+                opacity: 0.5,
             },
             group: "Landslide Map"
         };
@@ -193,12 +211,12 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 format: 'image/png',
                 attribution: '&copy; <a href="http://www.gistnu.com">GISTNU</a>',
                 transparent: true,
-                opacity: 0.7,
+                //opacity: 0.5,
                 zIndex: 1
             },
             layerOptions: {
                 format: "image/png",
-                opacity: 1,
+                opacity: 0.5,
             },
             group: "Landslide Map"
         };
@@ -291,8 +309,9 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
                 overlays: {
                     basin: basin,
                     lscls_mod1: lscls_mod1,
-                    lscls_mod1: lscls_mod2,
-                    rain_haii: rain_haii
+                    lscls_mod2: lscls_mod2,
+                    rain_haii: rain_haii,
+                    village: village
                 }
             },
 
@@ -401,7 +420,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
         console.log($scope.center);
 
         $scope.checkboxModel = {
-            vill: false,
+            vill: true,
             tambon: false,
             amphoe: false,
             province: false,
@@ -412,7 +431,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
             rain_haii: true,
             lscls_mod1: true,
             lscls_mod2: true,
-            dem: true
+            dem: false
         };
 
         $scope.showLayers = function (val) {
@@ -498,7 +517,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts', 'ngAnimate', 'ngSa
             geoService.getWfs()
                 .then(function (response) {
                     $scope.vills = response.data.features;
-                    $scope.Wfslength = 50;
+                    $scope.Wfslength = 100;
                     $scope.totalItems = $scope.Wfslength;
                     $scope.currentPage = 1;
                     $scope.numPerPage = 10;

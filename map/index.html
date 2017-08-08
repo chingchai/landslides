@@ -231,11 +231,11 @@
                         <tr ng-repeat="v in  vills | filter: paginate">
                           <!--<td>{{ r.sta_id }}</td>-->
                           <td>{{ v.properties.vill_nam_t }}</td>
-                          <td>{{ v.properties.tam_nam_t }}</td>
-                          <td>{{ v.properties.amp_nam_t }}</td>
-                          <td>{{ v.properties.prov_nam_t }}</td>
+                          <td>{{ v.properties.tb_tn }}</td>
+                          <td>{{ v.properties.ap_tn }}</td>
+                          <td>{{ v.properties.pv_tn }}</td>
                           <td class="text-center" colspan="2">
-                            <a class='glyphicon glyphicon-zoom-in' data-toggle='tooltip' title='Zoom' ng-click="goMap(v.properties.c_y, v.properties.c_x);">
+                            <a class='glyphicon glyphicon-zoom-in' data-toggle='tooltip' title='Zoom' ng-click="goMap(v.properties.lat, v.properties.lon);">
                                                     <i class='icon-zoom-in'></i>
                                                 </a>
                           </td>
