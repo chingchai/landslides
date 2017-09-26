@@ -174,10 +174,23 @@ ewres:      30.61190024
 rows:       14253
 cols:       6197
 cells:      88325841
-# Calculate Sub-watershed
+# Calculate Sub-watershed 
 r.watershed -b --overwrite elevation=gdem30m@PERMANENT threshold=1000 accumulation=gdem.accm tci=gdem.tci spi=gdem.spi drainage=gdem.dir basin=gdem.basin stream=gdem.stream memory=8096
 r.terraflow --overwrite elevation=gdem30m@PERMANENT filled=gdem.trf.fill direction=gdem.trf.dir swatershed=gdem.trf.swsh accumulation=gdem.trf.accm tci=gdem.trf.tci memory=4096
 r.stream.basins --overwrite direction=gdem.dir@PERMANENT stream_rast=gdem.stream@PERMANENT memory=8096 basins=gdem.basin_last
+
+# Calculate Sub-watershed for new request
+g.region -p
+r.watershed -b --overwrite elevation=gdem30m@PERMANENT threshold=10000 accumulation=gdem.accm tci=gdem.tci spi=gdem.spi drainage=gdem.dir basin=gdem.basin10k stream=gdem.stream memory=8096
+# Good final used 50k Threshold
+r.watershed -b --overwrite elevation=gdem30m@PERMANENT threshold=50000 accumulation=gdem.accm tci=gdem.tci spi=gdem.spi drainage=gdem.dir basin=gdem.basin50k stream=gdem.stream memory=8096
+
+r.to.vect -s --overwrite input=gdem.basin10k@PERMANENT output=basin10k_gdem_smooth type=area
+r.to.vect -s --overwrite input=gdem.basin50k@PERMANENT output=basin50k_gdem_smooth type=area
+
+v.out.ogr input=basin10k_gdem_smooth@PERMANENT type=area,auto output=C:\Workspace\Landslide format=ESRI_Shapefile
+v.out.ogr input=basin50k_gdem_smooth@PERMANENT type=area,auto output=C:\Workspace\Landslide format=ESRI_Shapefile
+
 # Convert to vector type
 r.to.vect --overwrite input=gdem.basin@PERMANENT output=basin_gdem type=area
 r.to.vect -s --overwrite input=gdem.basin@PERMANENT output=basin_gdem_smooth type=area
