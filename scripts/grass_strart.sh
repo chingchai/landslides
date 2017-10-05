@@ -67,7 +67,7 @@ Con("stream_cls3" == 3,1,0)
 # MOD 1 Binary model
 "rain" + "elev" + "slope" +"fault" + "stream" + "lu" + "soil"
 
-# MOD 2 Logistic regression
+# MOD 2 T-Test (Index Model)
 (0.422 * "rain_cls3") + (0.702 * "elev_cls") + (0.294 * "slope_cls") + (0.149 * "fault_cls2") + (0.543 * "stream_cls3") + (0.207 * "lu_cls3") + (0.168 * "soil_cls2")
 
 # Optional (Not good)
@@ -97,7 +97,7 @@ mean = 49164.80831310928
 std = 77164.83337285608
 ("fault_dist2" - 49164.80831310928) / 77164.83337285608
 
-# Map Algebra
+# Map Algebra Logistic regression
 1 / (1 + Exp(( - ( - 39.9168 + (0.0295 * "z_rain") + (0.0087 * "z_slope") + (0.0075 * "z_elev") + (0.0006 * "z_fault") + ( - 0.6413 * "s_grs") + (0.0979 * "s_def") + (-0.7801 * "s_mdf") + (-0.7785 * "s_ddf") + (-0.6169 * "s_agi") + (-2.3088* "s_clay")))))
 1 / (1 + Exp(( - ( - 39.9168 + (0.0295 * "rain") + (0.0087 * "slope") + (0.0075 * "elev") + (0.0006 * "fault") + ( - 0.6413 * "s_grs") + (0.0979 * "s_def") + (-0.7801 * "s_mdf") + (-0.7785 * "s_ddf") + (-0.6169 * "s_agi") + (-2.3088* "s_clay")))))
 1 / (1 + Exp(( - ( - 39.9168 + (0.029 * "z_rain") + (0.009 * "z_slope") + (0.007 * "z_elev") + (0.0005 * "z_fault_rv") + ( - 0.6413 * "s_grs") + (0.09791 * "s_def") + (-0.7801 * "s_mdf") + (-0.7784 * "s_ddf") + (-0.61690 * "s_agi") + (-2.3088 * "s_clay")))))
